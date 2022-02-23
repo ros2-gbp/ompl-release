@@ -1,3 +1,26 @@
+## ompl (rolling) - 1.5.2-2
+
+The packages in the `ompl` repository were released into the `rolling` distro by running `/home/steven/osrf/bloom/.direnv/python-3.10.2/bin/bloom-release -r rolling ompl --override-release-repository-url https://github.com/ros2-gbp/ompl-release.git` on `Wed, 23 Feb 2022 23:19:28 -0000`
+
+The `ompl` package was released.
+
+Version of package(s) in repository `ompl`:
+
+- upstream repository: https://github.com/ompl/ompl.git
+- release repository: https://github.com/ros-gbp/ompl-release.git
+- rosdistro version: `null`
+- old version: `1.5.2-1`
+- new version: `1.5.2-2`
+
+Versions of tools used:
+
+- bloom version: `0.10.7`
+- catkin_pkg version: `0.4.24`
+- rosdep version: `0.21.0`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## ompl (rolling) - 1.5.2-1
 
 The packages in the `ompl` repository were released into the `rolling` distro by running `/usr/bin/bloom-release ompl -r rolling -t rolling` on `Fri, 30 Apr 2021 04:54:35 -0000`
