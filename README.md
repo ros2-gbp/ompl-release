@@ -1,3 +1,26 @@
+## ompl (humble) - 1.6.0-1
+
+The packages in the `ompl` repository were released into the `humble` distro by running `/usr/bin/bloom-release ompl -r humble -t humble` on `Tue, 17 Jan 2023 00:49:42 -0000`
+
+The `ompl` package was released.
+
+Version of package(s) in repository `ompl`:
+
+- upstream repository: https://github.com/ompl/ompl.git
+- release repository: https://github.com/ros2-gbp/ompl-release.git
+- rosdistro version: `1.5.2-1`
+- old version: `1.5.2-1`
+- new version: `1.6.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.11.1`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.22.1`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## ompl (humble) - 1.5.2-1
 
 The packages in the `ompl` repository were released into the `humble` distro by running `/home/parallels/Documents/humble-releases/.direnv/python-3.8.10/bin/bloom-release -r humble -n ompl` on `Wed, 20 Apr 2022 22:44:29 -0000`
