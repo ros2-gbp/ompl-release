@@ -187,7 +187,8 @@ tracks:
     ros_distro: iron
     vcs_type: git
     vcs_uri: https://github.com/ompl/ompl.git
-    version: :{ask}
+    version: 1.5.2
+    version_saved: :{ask}
   jade:
     actions:
     - bloom-export-upstream :{vcs_local_uri} :{vcs_type} --tag :{release_tag} --display-uri
