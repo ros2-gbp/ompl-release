@@ -117,6 +117,9 @@ namespace ompl
             addPlannerProgressProperty("best cost DOUBLE", [this] { return bestCostProgressProperty(); });
             addPlannerProgressProperty("number of segments in solution path INTEGER",
                                        [this] { return bestLengthProgressProperty(); });
+            addPlannerProgressProperty("current free states INTEGER", [this] { return currentFreeProgressProperty(); });
+            addPlannerProgressProperty("current graph vertices INTEGER",
+                                       [this] { return currentVertexProgressProperty(); });
             addPlannerProgressProperty("state collision checks INTEGER",
                                        [this] { return stateCollisionCheckProgressProperty(); });
             addPlannerProgressProperty("edge collision checks INTEGER",
@@ -126,6 +129,10 @@ namespace ompl
 
             // Extra progress info that aren't necessary for every day use. Uncomment if desired.
             /*
+            addPlannerProgressProperty("vertex queue size INTEGER", [this]
+                                       {
+                                           return vertexQueueSizeProgressProperty();
+                                       });
             addPlannerProgressProperty("edge queue size INTEGER", [this]
                                        {
                                            return edgeQueueSizeProgressProperty();
@@ -654,10 +661,14 @@ namespace ompl
 
                 // Count the number of samples that could be pruned.
                 auto samples = graphPtr_->getCopyOfSamples();
-                auto numSamplesThatCouldBePruned =
-                    std::count_if(samples.begin(), samples.end(), [this](const auto& sample){
-                        return graphPtr_->canSampleBePruned(sample);
-                    });
+                unsigned int numSamplesThatCouldBePruned(0u);
+                for (const auto &sample : samples)
+                {
+                    if (graphPtr_->canSampleBePruned(sample))
+                    {
+                        ++numSamplesThatCouldBePruned;
+                    }
+                }
 
                 // Only prune if the decrease in number of samples and the associated decrease in nearest neighbour
                 // lookup cost justifies the cost of pruning. There has to be a way to make this more formal, and less
@@ -1325,12 +1336,22 @@ namespace ompl
 
         std::string BITstar::bestCostProgressProperty() const
         {
-            return ompl::toString(bestCost_.value());
+            return ompl::toString(this->bestCost().value());
         }
 
         std::string BITstar::bestLengthProgressProperty() const
         {
             return std::to_string(bestLength_);
+        }
+
+        std::string BITstar::currentFreeProgressProperty() const
+        {
+            return std::to_string(graphPtr_->numSamples());
+        }
+
+        std::string BITstar::currentVertexProgressProperty() const
+        {
+            return std::to_string(graphPtr_->numVertices());
         }
 
         std::string BITstar::edgeQueueSizeProgressProperty() const
@@ -1340,12 +1361,12 @@ namespace ompl
 
         std::string BITstar::iterationProgressProperty() const
         {
-            return std::to_string(numIterations_);
+            return std::to_string(this->numIterations());
         }
 
         std::string BITstar::batchesProgressProperty() const
         {
-            return std::to_string(numBatches_);
+            return std::to_string(this->numBatches());
         }
 
         std::string BITstar::pruningProgressProperty() const

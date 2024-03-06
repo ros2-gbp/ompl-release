@@ -104,7 +104,6 @@ namespace ompl
             DubinsStateSpace(double turningRadius = 1.0, bool isSymmetric = false)
               : rho_(turningRadius), isSymmetric_(isSymmetric)
             {
-                type_ = STATE_SPACE_DUBINS;
             }
 
             bool isMetricSpace() const override
@@ -138,7 +137,7 @@ namespace ompl
                 StateSpace::sanityChecks(zero, eps, flags);
             }
 
-            /** \brief Return a shortest Dubins path from SE(2) state state1 to SE(2) state state2 */
+            /** \brief Return the shortest Dubins path from SE(2) state state1 to SE(2) state state2 */
             DubinsPath dubins(const State *state1, const State *state2) const;
 
         protected:

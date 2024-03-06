@@ -39,7 +39,6 @@ library(dplyr, warn.conflicts = FALSE)
 library(tidyr)
 library(ggplot2)
 library(rlang)
-library(Hmisc)
 
 default_database <- "www/benchmark.db"
 
@@ -591,9 +590,9 @@ shinyServer(function(input, output, session) {
             dev.off()
         }
     )
-    output$perf_download_rdata <- downloadHandler(filename = "perfplot.rds",
+    output$perf_download_rdata <- downloadHandler(filename = "perfplot.RData",
         content = function(file) {
-            saveRDS(perf_plot(), file = file)
+            save(perfplot(), file = file)
         }
     )
     output$perf_missing_data_table <- renderTable({
@@ -799,10 +798,10 @@ shinyServer(function(input, output, session) {
             dev.off()
         }
     )
-    output$regr_download_rdata <- downloadHandler(filename = "regrplot.rds",
+    output$regr_download_rdata <- downloadHandler(filename = "regrplot.RData",
         content = function(file) {
             regrplot <- regr_plot()
-            saveRDS(regrplot, file = file)
+            save(regrplot, file = file)
         }
     )
 

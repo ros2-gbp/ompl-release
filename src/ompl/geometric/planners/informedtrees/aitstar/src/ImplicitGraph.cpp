@@ -1,7 +1,7 @@
 /*********************************************************************
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2019, University of Oxford
+ *  Copyright (c) 2019-present University of Oxford
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -92,16 +92,6 @@ namespace ompl
                 return rewireFactor_;
             }
 
-            void ImplicitGraph::setMaxNumberOfGoals(unsigned int maxNumberOfGoals)
-            {
-                maxNumGoals_ = maxNumberOfGoals;
-            }
-
-            unsigned int ImplicitGraph::getMaxNumberOfGoals() const
-            {
-                return maxNumGoals_;
-            }
-
             void ImplicitGraph::setUseKNearest(bool useKNearest)
             {
                 useKNearest_ = useKNearest;
@@ -178,7 +168,7 @@ namespace ompl
                         addedNewGoalState = true;
                     }
 
-                } while (inputStates->haveMoreGoalStates() && goalVertices_.size() <= maxNumGoals_);
+                } while (inputStates->haveMoreGoalStates());
 
                 // Having updated the goals, we now update the starts.
                 while (inputStates->haveMoreStartStates())
@@ -282,28 +272,40 @@ namespace ompl
 
             std::size_t ImplicitGraph::computeNumberOfSamplesInInformedSet() const
             {
-                // Loop over all vertices and count the ones in the informed set.
                 std::size_t numberOfSamplesInInformedSet{0u};
-                for (const auto &vertex : getVertices())
+                std::vector<std::shared_ptr<Vertex>> vertices;
+                vertices_.list(vertices);
+
+                // Loop over all vertices.
+                for (const auto &vertex : vertices)
                 {
                     // Get the best cost to come from any start.
-                    auto costToCome = objective_->infiniteCost();
+                    ompl::base::Cost bestCostToComeHeuristic = objective_->infiniteCost();
                     for (const auto &start : startVertices_)
                     {
-                        costToCome = objective_->betterCost(
-                            costToCome, objective_->motionCostHeuristic(start->getState(), vertex->getState()));
+                        auto costToComeHeuristic =
+                            objective_->motionCostHeuristic(start->getState(), vertex->getState());
+                        if (objective_->isCostBetterThan(costToComeHeuristic, bestCostToComeHeuristic))
+                        {
+                            bestCostToComeHeuristic = costToComeHeuristic;
+                        }
                     }
 
                     // Get the best cost to go to any goal.
-                    auto costToGo = objective_->infiniteCost();
+                    ompl::base::Cost bestCostToGoHeuristic = objective_->infiniteCost();
                     for (const auto &goal : goalVertices_)
                     {
-                        costToGo = objective_->betterCost(
-                            costToCome, objective_->motionCostHeuristic(vertex->getState(), goal->getState()));
+                        auto costToComeHeuristic =
+                            objective_->motionCostHeuristic(vertex->getState(), goal->getState());
+                        if (objective_->isCostBetterThan(costToComeHeuristic, bestCostToGoHeuristic))
+                        {
+                            bestCostToGoHeuristic = costToComeHeuristic;
+                        }
                     }
 
                     // If this can possibly improve the current solution, it is in the informed set.
-                    if (objective_->isCostBetterThan(objective_->combineCosts(costToCome, costToGo), solutionCost_))
+                    if (objective_->isCostBetterThan(
+                            objective_->combineCosts(bestCostToComeHeuristic, bestCostToGoHeuristic), solutionCost_))
                     {
                         ++numberOfSamplesInInformedSet;
                     }
@@ -342,7 +344,6 @@ namespace ompl
                     if (problemDefinition_->getGoal()->isSatisfied(newSamples_.back()->getState()))
                     {
                         goalVertices_.emplace_back(newSamples_.back());
-                        newSamples_.back()->setCostToComeFromGoal(objective_->identityCost());
                     }
 
                     ++numValidSamples_;

@@ -212,7 +212,7 @@ void ompl::base::RealVectorIdentityProjectionEvaluator::defaultCellSizes()
 
 void ompl::base::RealVectorIdentityProjectionEvaluator::setup()
 {
-    copySize_ = getDimension();
+    copySize_ = getDimension() * sizeof(double);
     ProjectionEvaluator::setup();
 }
 

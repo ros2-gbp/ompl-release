@@ -148,10 +148,7 @@ ompl::geometric::LazyPRM::LazyPRM(const base::PlannerData &data, bool starStrate
     }
 }
 
-ompl::geometric::LazyPRM::~LazyPRM()
-{
-    clear();
-};
+ompl::geometric::LazyPRM::~LazyPRM() = default;
 
 void ompl::geometric::LazyPRM::setup()
 {
@@ -393,7 +390,7 @@ ompl::base::PlannerStatus ompl::geometric::LazyPRM::solve(const base::PlannerTer
             do
             {
                 solution = constructSolution(startV, goalV);
-            } while (!solution && vertexComponentProperty_[startV] == vertexComponentProperty_[goalV] && !ptc);
+            } while (!solution && vertexComponentProperty_[startV] == vertexComponentProperty_[goalV]);
             if (solution)
             {
                 someSolutionFound = true;

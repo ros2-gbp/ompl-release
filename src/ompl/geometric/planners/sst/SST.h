@@ -276,7 +276,7 @@ namespace ompl
             std::vector<base::State *> prevSolution_;
 
             /** \brief The best solution cost we found so far. */
-            base::Cost prevSolutionCost_{std::numeric_limits<double>::quiet_NaN()};
+            base::Cost prevSolutionCost_;
 
             /** \brief The optimization objective. */
             base::OptimizationObjectivePtr opt_;

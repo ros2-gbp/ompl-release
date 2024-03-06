@@ -227,14 +227,15 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
     double approxdif = std::numeric_limits<double>::infinity();
     auto *rmotion = new Motion(si_);
     base::State *rstate = rmotion->state;
+    bool startTree = true;
     bool solved = false;
 
     while (!ptc)
     {
-        TreeData &tree = startTree_ ? tStart_ : tGoal_;
-        tgi.start = startTree_;
-        startTree_ = !startTree_;
-        TreeData &otherTree = startTree_ ? tStart_ : tGoal_;
+        TreeData &tree = startTree ? tStart_ : tGoal_;
+        tgi.start = startTree;
+        startTree = !startTree;
+        TreeData &otherTree = startTree ? tStart_ : tGoal_;
 
         if (tGoal_->size() == 0 || pis_.getSampledGoalsCount() < tGoal_->size() / 2)
         {
@@ -270,13 +271,8 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
             if (gs != REACHED)
                 si_->copyState(rstate, tgi.xstate);
 
-            tgi.start = startTree_;
-
-            /* if initial progress cannot be done from the otherTree, restore tgi.start */
-            GrowState gsc = growTree(otherTree, tgi, rmotion);
-            if (gsc == TRAPPED)
-                tgi.start = !tgi.start;
-
+            GrowState gsc = ADVANCED;
+            tgi.start = startTree;
             while (gsc == ADVANCED)
                 gsc = growTree(otherTree, tgi, rmotion);
 
@@ -288,8 +284,8 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
                 // OMPL_INFORM("Estimated distance to go: %f", distanceBetweenTrees_);
             }
 
-            Motion *startMotion = tgi.start ? tgi.xmotion : addedMotion;
-            Motion *goalMotion = tgi.start ? addedMotion : tgi.xmotion;
+            Motion *startMotion = startTree ? tgi.xmotion : addedMotion;
+            Motion *goalMotion = startTree ? addedMotion : tgi.xmotion;
 
             /* if we connected the trees in a valid way (start and goal pair is valid)*/
             if (gsc == REACHED && goal->isStartGoalPairValid(startMotion->root, goalMotion->root))
@@ -336,7 +332,7 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
             {
                 // We didn't reach the goal, but if we were extending the start
                 // tree, then we can mark/improve the approximate path so far.
-                if (tgi.start)
+                if (!startTree)
                 {
                     // We were working from the startTree.
                     double dist = 0.0;
