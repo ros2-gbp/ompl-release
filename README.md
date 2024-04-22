@@ -1,3 +1,26 @@
+## ompl (jazzy) - 1.5.2-2
+
+The packages in the `ompl` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release ompl --rosdistro jazzy` on `Mon, 22 Apr 2024 11:14:24 -0000`
+
+The `ompl` package was released.
+
+Version of package(s) in repository `ompl`:
+
+- upstream repository: https://github.com/ompl/ompl.git
+- release repository: https://github.com/ros2-gbp/ompl-release.git
+- rosdistro version: `null`
+- old version: `1.5.2-1`
+- new version: `1.5.2-2`
+
+Versions of tools used:
+
+- bloom version: `0.11.2`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.22.2`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## ompl (jazzy) - 1.5.2-1
 
 The packages in the `ompl` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release ompl --rosdistro jazzy` on `Mon, 22 Apr 2024 11:05:35 -0000`
