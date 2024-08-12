@@ -1,3 +1,26 @@
+## ompl (iron) - 1.6.0-2
+
+The packages in the `ompl` repository were released into the `iron` distro by running `/usr/bin/bloom-release --rosdistro iron ompl` on `Mon, 12 Aug 2024 18:21:35 -0000`
+
+The `ompl` package was released.
+
+Version of package(s) in repository `ompl`:
+
+- upstream repository: https://github.com/ompl/ompl.git
+- release repository: https://github.com/ros2-gbp/ompl-release.git
+- rosdistro version: `1.6.0-1`
+- old version: `1.6.0-1`
+- new version: `1.6.0-2`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.24.0`
+- rosdistro version: `0.9.1`
+- vcstools version: `0.1.42`
+
+
 ## ompl (jazzy) - 1.6.0-1
 
 The packages in the `ompl` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release --rosdistro jazzy ompl` on `Mon, 12 Aug 2024 18:13:12 -0000`
