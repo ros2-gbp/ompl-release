@@ -107,7 +107,7 @@ tracks:
       :{release_inc} --os-name fedora
     - git-bloom-generate -y rosrpm --prefix release/:{ros_distro} :{ros_distro} -i
       :{release_inc} --os-name rhel
-    devel_branch: 1.5.2
+    devel_branch: main
     last_version: 1.6.0
     name: upstream
     patches: null
@@ -177,7 +177,7 @@ tracks:
       :{release_inc} --os-name fedora
     - git-bloom-generate -y rosrpm --prefix release/:{ros_distro} :{ros_distro} -i
       :{release_inc} --os-name rhel
-    devel_branch: 1.6.0
+    devel_branch: main
     last_version: 1.6.0
     name: upstream
     patches: null
@@ -227,7 +227,7 @@ tracks:
       :{release_inc} --os-name fedora
     - git-bloom-generate -y rosrpm --prefix release/:{ros_distro} :{ros_distro} -i
       :{release_inc} --os-name rhel
-    devel_branch: 1.5.2
+    devel_branch: main
     last_version: 1.5.2
     name: upstream
     patches: null
