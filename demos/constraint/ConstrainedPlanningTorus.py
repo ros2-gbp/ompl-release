@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ######################################################################
 # Software License Agreement (BSD License)
@@ -37,6 +37,8 @@
 # Author: Mark Moll
 
 from __future__ import print_function
+
+from os.path import dirname, join
 import argparse
 import math
 from functools import partial
