@@ -191,7 +191,7 @@ ompl::multilevel::BundleSpaceSequence<T>::solve(const ompl::base::PlannerTermina
             priorityQueue_.push(kBundle);
 
         ompl::base::PlannerTerminationCondition ptcOrSolutionFound(
-            [this, &ptc] { return ptc || foundKLevelSolution_; });
+            [this, &ptc, k] { return ptc || (foundKLevelSolution_ && k < bundleSpaces_.size() - 1); });
 
         while (!ptcOrSolutionFound())
         {
@@ -393,9 +393,6 @@ void ompl::multilevel::BundleSpaceSequence<T>::getPlannerData(ompl::base::Planne
 
         // lift all states into the last bundle space (original state space)
         // Required for decouplePlannerData() function in PlannerData
-
-        unsigned int ctr = 0;
-
         for (unsigned int vidx = Nvertices; vidx < data.numVertices(); vidx++)
         {
             ompl::multilevel::PlannerDataVertexAnnotated &v =
@@ -405,7 +402,6 @@ void ompl::multilevel::BundleSpaceSequence<T>::getPlannerData(ompl::base::Planne
 
             base::State *s_lift = getTotalState(k, v.getBaseState());
             v.setTotalState(s_lift, Qlast->getBundle());
-            ctr++;
         }
         Nvertices = data.numVertices();
     }
