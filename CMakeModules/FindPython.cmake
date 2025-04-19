@@ -30,7 +30,7 @@
 # - find_boost_python(): Find the version of Boost.Python that matches the python interpreter
 # - find_boost_numpy(): Find the version of Boost.Numpy that matches the python interpreter
 # - install_python(PROGRAMS ...): Similar to install(PROGRAMS...), but replaces
-#   "#!/usr/bin/env python" with "#!${PYTHON_EXEC}"
+#   "#!/usr/bin/env python3" with "#!${PYTHON_EXEC}"
 
 include(FindPackageHandleStandardArgs)
 
@@ -69,6 +69,7 @@ if(PYTHON_EXEC)
     list(GET PYTHON_VERSION_INFO 1 PYTHON_VERSION_MINOR)
     list(GET PYTHON_VERSION_INFO 2 PYTHON_VERSION_MICRO)
     set(PYTHON_VERSION "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
+    set(PYTHON_VERSION_FULL "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_MICRO}")
     set(PYTHON_VERSION_NO_DOTS "${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}")
 endif()
 
@@ -77,7 +78,7 @@ find_library(PYTHON_LIBRARIES
     PATHS
         "${PYTHON_PREFIX}/lib"
         [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${PYTHON_VERSION}\\InstallPath]/libs
-    PATH_SUFFIXES "" "python${PYTHON_VERSION}/config" "x86_64-linux-gnu" "i386-linux-gnu"
+    PATH_SUFFIXES "" "python${PYTHON_VERSION}/config" "x86_64-linux-gnu" "i386-linux-gnu" "aarch64-linux-gnu"
     DOC "Python libraries" NO_DEFAULT_PATH)
 
 find_path(PYTHON_INCLUDE_DIRS "Python.h"
@@ -115,20 +116,35 @@ function(find_python_module module)
         # A module's location is usually a directory, but for binary modules
         # it's a .so file.
         if (_minversion STREQUAL "")
-            execute_process(COMMAND "${PYTHON_EXEC}" "-c"
-                "from importlib.util import find_spec; print(find_spec('${module}').submodule_search_locations[0])"
-                RESULT_VARIABLE _status OUTPUT_VARIABLE _location
-                ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+            if (${PYTHON_VERSION} VERSION_LESS_EQUAL "3.7")
+                execute_process(COMMAND "${PYTHON_EXEC}" "-c"
+                    "import re, inspect, ${module}; print(re.compile('/__init__.py.*').sub('',inspect.getfile(${module})))"
+                    RESULT_VARIABLE _status OUTPUT_VARIABLE _location
+                    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+            else()
+                execute_process(COMMAND "${PYTHON_EXEC}" "-c"
+                    "from importlib.util import find_spec; print(find_spec('${module}').submodule_search_locations[0])"
+                    RESULT_VARIABLE _status OUTPUT_VARIABLE _location
+                    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+            endif()
             if(NOT _status)
                 set(PY_${module_upper} ${_location} CACHE STRING
                     "Location of Python module ${module}")
             endif(NOT _status)
         else (_minversion STREQUAL "")
-            execute_process(COMMAND "${PYTHON_EXEC}" "-c"
-                "from importlib.metadata import version; from importlib.util import find_spec; print(version('${module}') + ';' + find_spec('${module}').submodule_search_locations[0])"
-                RESULT_VARIABLE _status
-                OUTPUT_VARIABLE _verloc
-                ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+            if (${PYTHON_VERSION} VERSION_LESS_EQUAL "3.7")
+                execute_process(COMMAND "${PYTHON_EXEC}" "-c"
+                    "import re, inspect, ${module}; print(re.compile('/__init__.py.*').sub('',${module}.__version__+';'+inspect.getfile(${module})))"
+                    RESULT_VARIABLE _status
+                    OUTPUT_VARIABLE _verloc
+                    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+            else()
+                execute_process(COMMAND "${PYTHON_EXEC}" "-c"
+                    "from importlib.metadata import version; from importlib.util import find_spec; print(version('${module}') + ';' + find_spec('${module}').submodule_search_locations[0])"
+                    RESULT_VARIABLE _status
+                    OUTPUT_VARIABLE _verloc
+                    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+            endif()
             if(NOT _status)
                 list(LENGTH _verloc _verloclength)
                 if(_verloclength GREATER 1)
@@ -177,6 +193,9 @@ macro(find_boost_python)
                 break()
             endif()
         endforeach()
+        if (NOT Boost_PYTHON_LIBRARY)
+          message(WARNING "Failed to find matching Boost.Python library! Python bindings probably won't work.")
+        endif()
     endif()
 endmacro(find_boost_python)
 
@@ -197,6 +216,9 @@ macro(find_boost_numpy)
                 break()
             endif()
         endforeach()
+        if (NOT Boost_NUMPY_LIBRARY)
+          message(WARNING "Failed to find matching Boost.Numpy library! Python bindings probably won't work.")
+        endif()
     endif()
 endmacro(find_boost_numpy)
 
@@ -206,7 +228,7 @@ macro(install_python)
         cmake_parse_arguments(install_python "" "DESTINATION;COMPONENT;RENAME" "PROGRAMS" "${ARGN}")
         foreach(script ${install_python_PROGRAMS})
             file(READ ${script} _contents)
-            string(REPLACE "#!/usr/bin/env python" "#!${PYTHON_EXEC}" _fixed "${_contents}")
+            string(REPLACE "#!/usr/bin/env python3" "#!${PYTHON_EXEC}" _fixed "${_contents}")
             get_filename_component(_realscript "${script}" NAME)
             file(WRITE "${PROJECT_BINARY_DIR}/${install_python_DESTINATION}/${_realscript}" "${_fixed}")
             install(PROGRAMS "${PROJECT_BINARY_DIR}/${install_python_DESTINATION}/${_realscript}"

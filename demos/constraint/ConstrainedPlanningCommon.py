@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ######################################################################
 # Software License Agreement (BSD License)
@@ -41,7 +41,11 @@ try:
     from ompl import util as ou
     from ompl import base as ob
     from ompl import geometric as og
-    from ompl import tools as ot
+    try:
+        from ompl import tools as ot
+    except ImportError:
+        pass
+
 except ImportError:
     # if the ompl module is not in the PYTHONPATH assume it is installed in a
     # subdirectory of the parent directory called "py-bindings."
@@ -52,7 +56,11 @@ except ImportError:
     from ompl import util as ou
     from ompl import base as ob
     from ompl import geometric as og
-    from ompl import tools as ot
+    try:
+        from ompl import tools as ot
+    except ImportError:
+        pass
+
 import datetime
 
 
@@ -165,8 +173,8 @@ class ConstrainedProblem(object):
             self.css.setAlpha(options.alpha)
             self.css.setMaxChartsPerExtension(options.charts)
             if options.bias:
-                self.css.setBiasFunction(lambda c, atlas=self.css:
-                                         atlas.getChartCount() - c.getNeighborCount() + 1.)
+                self.css.setBiasFunction(ob.AtlasChartBiasFunction(lambda c, atlas=self.css:
+                                         atlas.getChartCount() - c.getNeighborCount() + 1.))
             if spaceType == "AT":
                 self.css.setSeparated(not options.no_separate)
             self.css.setup()
@@ -242,7 +250,7 @@ class ConstrainedProblem(object):
             if output:
                 ou.OMPL_INFORM("Dumping path to `%s_path.txt`." % name)
                 with open('%s_path.txt' % name, 'w') as pathfile:
-                    print(path.printAsMatrix, file=pathfile)
+                    print(path.printAsMatrix(), file=pathfile)
 
                 ou.OMPL_INFORM(
                     "Dumping simplified path to `%s_simplepath.txt`." % name)
@@ -254,6 +262,10 @@ class ConstrainedProblem(object):
         return stat
 
     def setupBenchmark(self, planners, problem):
+        if not ot:
+            print("Benchmarking not available, no ompl.tools")
+            sys.exit(0)
+
         self.bench = ot.Benchmark(self.ss, problem)
 
         self.bench.addExperimentParameter(
