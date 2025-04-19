@@ -154,18 +154,30 @@ ompl::geometric::RRTConnect::GrowState ompl::geometric::RRTConnect::growTree(Tre
         const unsigned int count = si_->getStateSpace()->validSegmentCount(astate, bstate);
 
         if (si_->getMotionStates(astate, bstate, states, count, true, true))
-            si_->freeState(states[0]);
+        {
+            // if coming from start, don't add the start state (start->goal)
+            if (tgi.start)
+                si_->freeState(states[0]);
+            // if coming from the goal, don't add the start state (goal->start)
+            else
+                si_->freeState(states[states.size() - 1]);
+        }
 
-        for (std::size_t i = 1; i < states.size(); ++i)
+        // Add states forwards if from start, backwards if from goal
+        const auto &add_state = [&](const auto &state)
         {
             auto *motion = new Motion;
-            motion->state = states[i];
+            motion->state = state;
             motion->parent = nmotion;
             motion->root = nmotion->root;
             tree->add(motion);
-
             nmotion = motion;
-        }
+        };
+
+        if (tgi.start)
+            std::for_each(++std::begin(states), std::end(states), add_state);
+        else
+            std::for_each(++std::rbegin(states), std::rend(states), add_state);
 
         tgi.xmotion = nmotion;
     }
@@ -228,6 +240,7 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
     auto *rmotion = new Motion(si_);
     base::State *rstate = rmotion->state;
     bool solved = false;
+    base::PlannerStatus::StatusType status = base::PlannerStatus::TIMEOUT;
 
     while (!ptc)
     {
@@ -250,6 +263,7 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
             if (tGoal_->size() == 0)
             {
                 OMPL_ERROR("%s: Unable to sample any valid states for goal tree", getName().c_str());
+                status = base::PlannerStatus::INVALID_GOAL;
                 break;
             }
         }
@@ -375,7 +389,7 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
         return base::PlannerStatus::APPROXIMATE_SOLUTION;
     }
 
-    return solved ? base::PlannerStatus::EXACT_SOLUTION : base::PlannerStatus::TIMEOUT;
+    return solved ? base::PlannerStatus::EXACT_SOLUTION : status;
 }
 
 void ompl::geometric::RRTConnect::getPlannerData(base::PlannerData &data) const
