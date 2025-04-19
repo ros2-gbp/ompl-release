@@ -4,11 +4,11 @@
 
 OMPL provides a high level of abstraction to make it easier to integrate it into larger robot software systems. By design, the core OMPL library does not include any code for representing geometry and kinematics. However, to solve motion planning problems, we _do_ need to pick a particular representation for robots and the environment. Below we have listed a number of projects that have done this in very different ways.
 
-## MoveIt {#integration_moveit}
+## MoveIt {#integration_moveit2}
 
 <div class="row">
   <div class="col-lg-7 col-md-6 col-sm-5">
-    [MoveIt!](https://moveit.ros.org) provides motion planning functionality in [ROS](https://www.ros.org). Robots are described by [URDF files](https://wiki.ros.org/urdf), which describe the robot's geometry, kinematics, and additional robot information. MoveIt! can load such files, create appropriate state spaces for user-defined joint groups (e.g., “left arm,” “right leg,” “upper body,” “whole body,” etc.), and call OMPL planners to find feasible paths. There is support for inverse kinematics, which makes is possible to, e.g, include end-effector constraints. The paths produced by OMPL are translated by MoveIt! into dynamically feasible trajectories. The MoveIt! setup wizard will automatically discover self-collisions in a pre-processing phase. The environment can either be provided in the form of collection of geometric objects (triangles, spheres, cylinders, etc.), a point cloud (obtained from a RGBD sensor), or a combination of both. The adjacent video is a montage of MoveIt!'s capabilities in 2017.
+    [MoveIt2!](https://moveit.ros.org) provides motion planning functionality in [ROS](https://www.ros.org). Robots are described by [URDF files](https://wiki.ros.org/urdf), which describe the robot's geometry, kinematics, and additional robot information. MoveIt2! can load such files, create appropriate state spaces for user-defined joint groups (e.g., “left arm,” “right leg,” “upper body,” “whole body,” etc.), and call OMPL planners to find feasible paths. There is support for inverse kinematics, which makes is possible to, e.g, include end-effector constraints. The paths produced by OMPL are translated by MoveIt2! into dynamically feasible trajectories. The MoveIt2! setup wizard will automatically discover self-collisions in a pre-processing phase. The environment can either be provided in the form of collection of geometric objects (triangles, spheres, cylinders, etc.), a point cloud (obtained from a RGBD sensor), or a combination of both. The adjacent video is a montage of MoveIt2!'s capabilities in 2017.
   </div>
   <div class="col-lg-5 col-md-6 col-sm-7">
     <div class="embed-responsive embed-responsive-16by9">
@@ -39,19 +39,6 @@ OMPL provides a high level of abstraction to make it easier to integrate it into
   <div class="col-lg-5 col-md-6 col-sm-7">
     <div class="embed-responsive embed-responsive-16by9">
       \htmlonly<iframe src="https://www.youtube.com/embed/JAs2yciPjvM"></iframe>\endhtmlonly
-    </div>
-  </div>
-</div>
-
-## MORSE {#integration_morse}
-
-<div class="row">
-  <div class="col-lg-7 col-md-6 col-sm-5">
-    [The Modular OpenRobots Simulation Engine (MORSE)](http://morse-simulator.github.io) is a generic simulator for academic robotics. It is implemented as an extension for Blender, a 3D modeling program. Blender includes a game engine which uses the Bullet physics simulator under the hood. MORSE includes many simulated sensors, actuators, and robot models. Caleb Voss, as part of a Google Summer of Code project, developed [a plugin for Blender/MORSE](https://ompl.kavrakilab.org/morse.html) that adds planning functionality. The adjacent video shows an example of what can be produced with this plugin.
-  </div>
-  <div class="col-lg-5 col-md-6 col-sm-7">
-    <div class="embed-responsive embed-responsive-16by9">
-      \htmlonly<iframe src="https://player.vimeo.com/video/71580831?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff&amp;autoplay=0&amp;loop=1"></iframe>\endhtmlonly
     </div>
   </div>
 </div>
