@@ -1,3 +1,26 @@
+## ompl (humble) - 1.7.0-4
+
+The packages in the `ompl` repository were released into the `humble` distro by running `/usr/bin/bloom-release ompl -r humble` on `Wed, 20 Aug 2025 16:00:44 -0000`
+
+The `ompl` package was released.
+
+Version of package(s) in repository `ompl`:
+
+- upstream repository: https://github.com/ompl/ompl.git
+- release repository: https://github.com/ros2-gbp/ompl-release.git
+- rosdistro version: `1.7.0-3`
+- old version: `1.7.0-3`
+- new version: `1.7.0-4`
+
+Versions of tools used:
+
+- bloom version: `0.13.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## ompl (kilted) - 1.7.0-3
 
 The packages in the `ompl` repository were released into the `kilted` distro by running `/usr/bin/bloom-release ompl -t kilted -r kilted` on `Fri, 16 May 2025 15:27:54 -0000`
