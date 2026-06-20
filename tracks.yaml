@@ -335,10 +335,10 @@ tracks:
     patches: null
     release_inc: '4'
     release_repo_url: null
-    release_tag: :{version}
+    release_tag: ompl-:{version}
     ros_distro: lyrical
-    vcs_type: git
-    vcs_uri: https://github.com/ompl/ompl.git
+    vcs_type: tar
+    vcs_uri: https://github.com/ompl/ompl/releases/download/:{version}/ompl-:{version}.tar.gz
     version: :{ask}
   melodic:
     actions:
@@ -413,8 +413,8 @@ tracks:
     patches: null
     release_inc: '3'
     release_repo_url: null
-    release_tag: :{version}
+    release_tag: ompl-:{version}
     ros_distro: rolling
-    vcs_type: git
-    vcs_uri: https://github.com/ompl/ompl.git
+    vcs_type: tar
+    vcs_uri: https://github.com/ompl/ompl/releases/download/:{version}/ompl-:{version}.tar.gz
     version: :{ask}
