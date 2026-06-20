@@ -35,6 +35,7 @@
 /* Author: Ryan Luna */
 
 #include <fstream>
+#include <boost/math/constants/constants.hpp>
 
 #include "boost/program_options.hpp"
 #include "PolyWorld.h"
@@ -76,7 +77,8 @@ struct Arguments
 // Minimal setup for a planar manipulation problem.
 struct Problem
 {
-    Problem(int links, const std::string& problemName, PolyWorld &&world, const Eigen::Affine2d &baseFrame, const Eigen::Affine2d &goalFrame)
+    Problem(int links, const std::string &problemName, PolyWorld &&world, const Eigen::Affine2d &baseFrame,
+            const Eigen::Affine2d &goalFrame)
       : name(problemName), manipulator(links, 1.0 / links), world(std::move(world)), goalFrame(goalFrame)
     {
         manipulator.setBaseFrame(baseFrame);
@@ -118,8 +120,8 @@ ompl::geometric::SimpleSetupPtr setupOMPL(Problem &problem)
     // Create the state space for the manipulator.
     ompl::base::StateSpacePtr space(new PlanarManipulatorStateSpace(numLinks));
     ompl::base::RealVectorBounds bounds(numLinks);
-    bounds.setLow(-M_PI);
-    bounds.setHigh(M_PI);
+    bounds.setLow(-boost::math::constants::pi<double>());
+    bounds.setHigh(boost::math::constants::pi<double>());
 
     // Bound the joints of the manipulator between [-PI, PI]
     space->as<PlanarManipulatorStateSpace>()->setBounds(bounds);
@@ -269,7 +271,7 @@ void BenchmarkProblem(ompl::geometric::SimpleSetupPtr setup, const Problem &prob
         setup->getSpaceInformation(), getXXLDecomp(setup->getSpaceInformation(), problem, /*xySlices*/ 1)));
     xxl1->setName("XXL1");
 
-    std::string name ="PlanarManipulator - " + problem.name;
+    std::string name = "PlanarManipulator - " + problem.name;
     ompl::tools::Benchmark benchmark(*setup, name);
 
     benchmark.addPlanner(rrt);
@@ -283,9 +285,8 @@ void BenchmarkProblem(ompl::geometric::SimpleSetupPtr setup, const Problem &prob
     benchmark.addPlanner(xxl1);
     benchmark.addPlanner(tsrrt);
 
-    benchmark.setPostRunEvent([&](const ompl::base::PlannerPtr &planner, ompl::tools::Benchmark::RunProperties &run) {
-        postRunEvent(planner, run, &problem.manipulator);
-    });
+    benchmark.setPostRunEvent([&](const ompl::base::PlannerPtr &planner, ompl::tools::Benchmark::RunProperties &run)
+                              { postRunEvent(planner, run, &problem.manipulator); });
     benchmark.addExperimentParameter("num_links", "INTEGER", boost::lexical_cast<std::string>(numLinks));
     benchmark.addExperimentParameter("cells", "INTEGER", boost::lexical_cast<std::string>(xySlices));
 
