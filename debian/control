@@ -1,0 +1,12 @@
+Source: ros-rolling-ompl
+Section: misc
+Priority: optional
+Maintainer: "Mark Moll" <mark@moll.ai>
+Build-Depends: debhelper (>= 9.0.0), cmake, libboost-program-options-dev, libboost-serialization-dev, libboost-system-dev, libeigen3-dev, libflann-dev, libyaml-cpp-dev, pkg-config, python3-dev, ros-rolling-ros-workspace
+Homepage: https://ompl.kavrakilab.org
+Standards-Version: 3.9.2
+
+Package: ros-rolling-ompl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libboost-program-options1.83.0, libboost-serialization1.83.0, libflann1.9, libyaml-cpp-dev, ros-rolling-ros-workspace
+Description: OMPL is a free sampling-based motion planning library.
