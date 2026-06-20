@@ -330,10 +330,11 @@ tracks:
     - git-bloom-generate -y rosdynrpm --prefix release/:{ros_distro} :{ros_distro}
       -i :{release_inc} --require-os fedora rhel
     devel_branch: main
-    last_version: 1.7.0
+    last_release: ompl-2.0.1
+    last_version: 2.0.1
     name: upstream
     patches: null
-    release_inc: '4'
+    release_inc: '1'
     release_repo_url: null
     release_tag: ompl-:{version}
     ros_distro: lyrical
