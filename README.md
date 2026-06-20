@@ -1,3 +1,26 @@
+## ompl (lyrical) - 2.0.1-1
+
+The packages in the `ompl` repository were released into the `lyrical` distro by running `/usr/bin/bloom-release ompl -r lyrical` on `Sat, 20 Jun 2026 16:00:34 -0000`
+
+The `ompl` package was released.
+
+Version of package(s) in repository `ompl`:
+
+- upstream repository: https://github.com/ompl/ompl/releases/download/:{version}/ompl-:{version}.tar.gz
+- release repository: https://github.com/ros2-gbp/ompl-release.git
+- rosdistro version: `1.7.0-4`
+- old version: `1.7.0-4`
+- new version: `2.0.1-1`
+
+Versions of tools used:
+
+- bloom version: `0.14.3`
+- catkin_pkg version: `1.1.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## ompl (rolling) - 2.0.1-1
 
 The packages in the `ompl` repository were released into the `rolling` distro by running `/usr/bin/bloom-release ompl -r rolling` on `Sat, 20 Jun 2026 15:58:38 -0000`
