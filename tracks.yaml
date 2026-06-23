@@ -333,8 +333,8 @@ tracks:
     last_release: ompl-2.0.1
     last_version: 2.0.1
     name: upstream
-    patches: null
-    release_inc: '1'
+    patches: lyrical
+    release_inc: '2'
     release_repo_url: null
     release_tag: ompl-:{version}
     ros_distro: lyrical
@@ -412,8 +412,8 @@ tracks:
     last_release: ompl-2.0.1
     last_version: 2.0.1
     name: upstream
-    patches: null
-    release_inc: '1'
+    patches: rolling
+    release_inc: '2'
     release_repo_url: null
     release_tag: ompl-:{version}
     ros_distro: rolling
