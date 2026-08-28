@@ -7,7 +7,12 @@ if(VAMP_BUILD_PYTHON_BINDINGS)
     REQUIRED COMPONENTS Interpreter Development.Module
     OPTIONAL_COMPONENTS Development.SABIModule)
 
-  CPMAddPackage("gh:wjakob/nanobind#9a25aed8a7edfe60ef9ad1c911e57667bc4916c4")
+  if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/../external/nanobind")
+    set(nanobind_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../external/nanobind" CACHE INTERNAL "")
+    message(STATUS "Using vendored nanobind from ${nanobind_SOURCE_DIR}")
+  else()
+    CPMAddPackage("gh:wjakob/nanobind#9a25aed8a7edfe60ef9ad1c911e57667bc4916c4")
+  endif()
 
   # Check if Python is available
   if(NOT Python_FOUND)
