@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.12)
-project(ompl VERSION 2.0.1 LANGUAGES CXX)
+project(ompl VERSION 2.0.2 LANGUAGES CXX)
 set(OMPL_ABI_VERSION 19)
 include(FeatureSummary)
 
 # VAMP build options
 option(VAMP_BUILD_PYTHON_BINDINGS "Build VAMP Python bindings (requires OMPL_BUILD_VAMP=ON)" OFF)
 add_feature_info(VAMP_BUILD_PYTHON_BINDINGS "${VAMP_BUILD_PYTHON_BINDINGS}" "Whether to build VAMP Python bindings.")
-option(OMPL_BUILD_VAMP "Build VAMP submodule" OFF)
+option(OMPL_BUILD_VAMP "Build VAMP submodule" ON)
 add_feature_info(OMPL_BUILD_VAMP "${OMPL_BUILD_VAMP}" "Whether to build VAMP submodule.")
 # Default to portable SIMD when invoked from a Debian/dpkg build (DEB_BUILD_OPTIONS
 # is exported by dpkg-buildpackage / debhelper, so this catches the ROS buildfarm
