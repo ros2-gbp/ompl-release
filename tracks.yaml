@@ -333,7 +333,7 @@ tracks:
     last_release: ompl-2.0.1
     last_version: 2.0.1
     name: upstream
-    patches: lyrical
+    patches: null
     release_inc: '3'
     release_repo_url: null
     release_tag: ompl-:{version}
@@ -412,7 +412,7 @@ tracks:
     last_release: ompl-2.0.1
     last_version: 2.0.1
     name: upstream
-    patches: rolling
+    patches: null
     release_inc: '3'
     release_repo_url: null
     release_tag: ompl-:{version}
