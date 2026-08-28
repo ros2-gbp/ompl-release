@@ -4,6 +4,7 @@ requires = [
     "nanobind",
     "cmake >=3.18",
     "ninja",
+    "numpy"
 ]
 build-backend = "scikit_build_core.build"
 
