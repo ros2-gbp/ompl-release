@@ -60,6 +60,7 @@ OMPL is a free sampling-based motion planning library.
 %if !0%{?with_tests}
     -DBUILD_TESTING=OFF \
 %endif
+    -DOMPL_SKIP_RPATH=ON \
 
 %cmake3_build
 
