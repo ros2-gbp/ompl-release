@@ -1,0 +1,24 @@
+From 9ee35671c4eb9244e20bcb92563ade803d90d4aa Mon Sep 17 00:00:00 2001
+From: Scott K Logan <logans@cottsay.net>
+Date: Thu, 10 Sep 2026 18:37:40 -0500
+Subject: [PATCH] Skip unnecessary RPATHs in RPM builds
+
+---
+ rpm/ros-rolling-ompl.spec | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/rpm/ros-rolling-ompl.spec b/rpm/ros-rolling-ompl.spec
+index f514210b3d7f..890b11994b3c 100644
+--- a/rpm/ros-rolling-ompl.spec
++++ b/rpm/ros-rolling-ompl.spec
+@@ -60,6 +60,7 @@ OMPL is a free sampling-based motion planning library.
+ %if !0%{?with_tests}
+     -DBUILD_TESTING=OFF \
+ %endif
++    -DOMPL_SKIP_RPATH=ON \
+ 
+ %cmake3_build
+ 
+-- 
+2.55.0
+
